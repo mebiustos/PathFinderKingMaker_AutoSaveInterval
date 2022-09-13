@@ -3,7 +3,6 @@ using Kingmaker.EntitySystem.Persistence;
 using System.Collections;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityModManagerNet;
 
 namespace AutoSaveInterval
@@ -43,11 +42,6 @@ namespace AutoSaveInterval
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
 
-            SceneManager.sceneLoaded += (scene, mode) =>
-            {
-                Debug.Log("scene.name = " + scene.name);
-            };
-
             return true;
         }
 
@@ -66,8 +60,8 @@ namespace AutoSaveInterval
     [HarmonyPatch(typeof(SaveManager))]
     static class MySaveManager
     {
-        private static readonly bool skipFirstTimeSave = true;
-        private static bool isFirstTime = true;
+        private static readonly bool skipFirstSave = true;
+        private static bool isFirstSave = true;
 
         private static float lastAutoSaveTime = 0f;
 
@@ -79,14 +73,14 @@ namespace AutoSaveInterval
 
             if (saveInfo.Type != SaveInfo.SaveType.Auto || (saveInfo.Type == SaveInfo.SaveType.Auto && saveInfo.IsAutoLevelupSave))
             {
-                isFirstTime = false;
+                isFirstSave = false;
                 lastAutoSaveTime = currentTime;
                 return true;
             }
 
-            if (isFirstTime && skipFirstTimeSave == false)
+            if (isFirstSave && skipFirstSave == false)
             {
-                isFirstTime = false;
+                isFirstSave = false;
                 lastAutoSaveTime = currentTime;
                 return false;
             }
