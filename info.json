@@ -1,6 +1,6 @@
 ﻿{
   "Id": "AutoSaveInterval",
-  "DisplayName": "AutoSaveInterval",
+  "DisplayName": "Auto Save Interval",
   "Author": "MebiusTOS",
   "Version": "0.0.1",
   "AssemblyName": "AutoSaveInterval.dll",
